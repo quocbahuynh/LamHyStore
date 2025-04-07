@@ -1,0 +1,6 @@
+@LamHyStore_HostAddress = http://localhost:5092
+
+GET {{LamHyStore_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

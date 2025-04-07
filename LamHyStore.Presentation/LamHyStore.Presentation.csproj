@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.JsonPatch" Version="8.0.10" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.1.38" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.1.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\LamHyStore.Entities\LamHyStore.Entities.csproj" />
+    <ProjectReference Include="..\LamHyStore.GoogleSheetService\LamHyStore.GoogleSheetService.csproj" />
+    <ProjectReference Include="..\LamHyStore.Repository\LamHyStore.Repository.csproj" />
+    <ProjectReference Include="..\LamHyStore.Service\LamHyStore.Service.csproj" />
+    <ProjectReference Include="..\LamHyStore.Shared\LamHyStore.Shared.csproj" />
+    <ProjectReference Include="..\LamHyStore.VNpayService\LamHyStore.VNpayService.csproj" />
+  </ItemGroup>
+
+</Project>

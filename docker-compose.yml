@@ -1,0 +1,96 @@
+version: '3.8'
+
+services:
+  nginx-proxy:
+    image: nginxproxy/nginx-proxy
+    container_name: nginx-proxy
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - conf:/etc/nginx/conf.d
+      - vhost:/etc/nginx/vhost.d
+      - html:/usr/share/nginx/html
+      - certs:/etc/nginx/certs:ro
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+    restart: always
+    networks:
+      - proxy-tier
+
+  acme-companion:
+    image: nginxproxy/acme-companion
+    container_name: nginx-proxy-acme
+    environment:
+      - DEFAULT_EMAIL=admin@lamhystore.com
+    volumes:
+      - conf:/etc/nginx/conf.d
+      - vhost:/etc/nginx/vhost.d
+      - html:/usr/share/nginx/html
+      - certs:/etc/nginx/certs:rw
+      - acme:/etc/acme.sh
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    depends_on:
+      - nginx-proxy
+    restart: always
+    networks:
+      - proxy-tier
+
+  db:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: sql-server
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=YourStrong@Password123!
+    volumes:
+      - sql-data:/var/opt/mssql
+    # Un-comment the ports block below if you want to access the DB remotely via SSMS
+    # ports:
+    #   - "1433:1433"
+    restart: always
+    networks:
+      - backend-tier
+
+  backend:
+    build:
+      context: .
+      dockerfile: LamHyStore/Dockerfile
+    container_name: backend-api
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ConnectionStrings__DefaultConnection=Server=db;Database=LamHyStoreDb;User=sa;Password=YourStrong@Password123!;TrustServerCertificate=True;
+      # Proxy environments
+      - VIRTUAL_HOST=api.lamhystore.com
+      - LETSENCRYPT_HOST=api.lamhystore.com
+    depends_on:
+      - db
+    restart: always
+    networks:
+      - backend-tier
+      - proxy-tier
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: frontend-app
+    environment:
+      - VIRTUAL_HOST=lamhystore.com,www.lamhystore.com
+      - LETSENCRYPT_HOST=lamhystore.com,www.lamhystore.com
+      - NEXT_PUBLIC_API_URL=https://api.lamhystore.com
+    depends_on:
+      - backend
+    restart: always
+    networks:
+      - proxy-tier
+
+volumes:
+  conf:
+  vhost:
+  html:
+  certs:
+  acme:
+  sql-data:
+
+networks:
+  proxy-tier:
+  backend-tier:

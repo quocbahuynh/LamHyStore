@@ -1,0 +1,46 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>76a9dabe-602a-4565-a9db-3fca92d40dd6</UserSecretsId>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <DockerComposeProjectPath>..\docker-compose.dcproj</DockerComposeProjectPath>
+	<NoDefaultLaunchSettingsFile>true</NoDefaultLaunchSettingsFile>
+	<EnableSdkContainerSupport>true</EnableSdkContainerSupport>
+	<ContainerUser>root</ContainerUser>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.10" />
+    <PackageReference Include="Microsoft.AspNetCore.DataProtection.EntityFrameworkCore" Version="8.0.10" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="8.0.10" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.10" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.10">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.20.1" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\LamHyStore.Contracts\LamHyStore.Contracts.csproj" />
+    <ProjectReference Include="..\LamHyStore.Entities\LamHyStore.Entities.csproj" />
+    <ProjectReference Include="..\LamHyStore.KioVietService\LamHyStore.KioVietService.csproj" />
+    <ProjectReference Include="..\LamHyStore.Presentation\LamHyStore.Presentation.csproj" />
+    <ProjectReference Include="..\LamHyStore.LoggerService\LamHyStore.LoggerService.csproj" />
+    <ProjectReference Include="..\LamHyStore.Repository\LamHyStore.Repository.csproj" />
+    <ProjectReference Include="..\LamHyStore.Shared\LamHyStore.Shared.csproj" />
+    <ProjectReference Include="..\LamHyStore.VNpayService\LamHyStore.VNpayService.csproj" />
+    <ProjectReference Include="..\LamHyStore.EmailService\LamHyStore.EmailService.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+</Project>
